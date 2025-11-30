@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Мои задачи</h1>
+
+      <div class="counters">
+        <strong><span id="inProgressCount">0</span></strong> в работе •
+        <strong><span id="doneCount">0</span></strong> выполнено
+      </div>
+
+      <div class="add-task">
+        <input type="text" id="taskInput" placeholder="Введите задачу..." />
+        <button id="addBtn">Добавить</button>
+      </div>
+
+      <div class="tasks">
+        <div class="column">
+          <h2>В работе</h2>
+          <div id="inProgress" class="task-list"></div>
+        </div>
+
+        <div class="column">
+          <h2>Выполненные</h2>
+          <div id="done" class="task-list"></div>
+        </div>
+      </div>
+    </div>
+    <script src="./dist/script.js"></script>
+  </body>
+</html>
