@@ -33,14 +33,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     add = (title: string): void => {
-      const newTask = new Task(title);
-
-      this.tasks.push(newTask);
-
-      debugger;
-      this.saveLocalStorage();
-      renderTasks();
-      console.log(newTask);
+      try {
+        validationTaskTitle(title);
+        const newTask = new Task(title);
+        this.tasks.push(newTask);
+        this.saveLocalStorage();
+        renderTasks();
+        console.log(newTask);
+      } catch (error) {
+        if (error instanceof Error) {
+          alert(error.message);
+        }
+      }
     };
 
     remove = (id: string): void => {
@@ -167,10 +171,18 @@ ${task.done ? "" : '<button class="delete-btn">Удалить</button>'}
 
   addBtn.addEventListener("click", () => {
     const title = input.value.trim();
-    if (!title) return;
 
     taskManager.add(title);
     input.value = "";
     renderTasks();
   });
 });
+function validationTaskTitle(title: string): void {
+  const trimmed = title.trim();
+  if (trimmed.length === 0) {
+    throw new Error("Название задачи не может быть пустым");
+  }
+  if (trimmed.length > 12) {
+    throw new Error("Название задачи слишком длинное");
+  }
+}
