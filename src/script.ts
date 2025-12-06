@@ -101,11 +101,19 @@ document.addEventListener("DOMContentLoaded", () => {
       block.className = "task-item";
       block.dataset.id = task.id;
 
-      block.innerHTML = `<span>${task.title}</span>
-<button class="done-btn">...</button>
-${task.done ? "" : '<button class="edit-btn">Редактировать</button>'}
-${task.done ? "" : '<button class="delete-btn">Удалить</button>'}
-`;
+      if (task.done) {
+        block.innerHTML = `
+    <span>${task.title}</span>
+    <button class="done-btn">Вернуть</button>
+  `;
+      } else {
+        block.innerHTML = `
+    <span>${task.title}</span>
+    <button class="done-btn">Готово</button>
+    <button class="edit-btn">Изменить</button>
+    <button class="delete-btn">Удалить</button>
+  `;
+      }
 
       const deleteBtn = block.querySelector(".delete-btn");
       deleteBtn?.addEventListener("click", () => {

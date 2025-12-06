@@ -3,10 +3,266 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To-Do App</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
+    <title>To-Do App - Мои задачи</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        padding: 40px;
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h1 {
+        font-size: 36px;
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .counters {
+        text-align: center;
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 30px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+      }
+
+      .counters strong {
+        color: #667eea;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .add-task {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+
+      #taskInput {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s;
+        outline: none;
+      }
+
+      #taskInput:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      #addBtn {
+        padding: 15px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      #addBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+      }
+
+      #addBtn:active {
+        transform: translateY(0);
+      }
+
+      .tasks {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .column {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 20px;
+        min-height: 300px;
+      }
+
+      .column h2 {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #667eea;
+      }
+
+      .task-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .task-item {
+        background: white;
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s;
+        animation: slideIn 0.3s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .task-item:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .task-item span {
+        flex: 1;
+        font-size: 15px;
+        color: #333;
+        word-break: break-word;
+      }
+
+      .task-edit-input {
+        flex: 1;
+        padding: 8px;
+        border: 2px solid #667eea;
+        border-radius: 5px;
+        font-size: 15px;
+        outline: none;
+      }
+
+      .task-item button {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        white-space: nowrap;
+      }
+
+      .done-btn {
+        background: #4caf50;
+        color: white;
+        min-width: 90px;
+      }
+
+      .done-btn:hover {
+        background: #45a049;
+        transform: scale(1.05);
+      }
+
+      .edit-btn {
+        background: #2196f3;
+        color: white;
+      }
+
+      .edit-btn:hover {
+        background: #0b7dda;
+        transform: scale(1.05);
+      }
+
+      .delete-btn {
+        background: #f44336;
+        color: white;
+      }
+
+      .delete-btn:hover {
+        background: #da190b;
+        transform: scale(1.05);
+      }
+
+      #done .task-item {
+        opacity: 0.8;
+        background: #f0f0f0;
+      }
+
+      #done .task-item span {
+        text-decoration: line-through;
+        color: #999;
+      }
+
+      #done .done-btn {
+        background: #ff9800;
+      }
+
+      #done .done-btn:hover {
+        background: #e68900;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 28px;
+        }
+
+        .tasks {
+          grid-template-columns: 1fr;
+        }
+
+        .add-task {
+          flex-direction: column;
+        }
+
+        #addBtn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
   <body>
     <div class="container">
       <h1>Мои задачи</h1>
@@ -17,22 +273,28 @@
       </div>
 
       <div class="add-task">
-        <input type="text" id="taskInput" placeholder="Введите задачу..." />
-        <button id="addBtn">Добавить</button>
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Введите задачу..."
+          maxlength="100"
+        />
+        <button id="addBtn">➕ Добавить</button>
       </div>
 
       <div class="tasks">
         <div class="column">
-          <h2>В работе</h2>
+          <h2>🔄 В работе</h2>
           <div id="inProgress" class="task-list"></div>
         </div>
 
         <div class="column">
-          <h2>Выполненные</h2>
+          <h2>✅ Выполненные</h2>
           <div id="done" class="task-list"></div>
         </div>
       </div>
     </div>
+
     <script src="./dist/script.js"></script>
   </body>
 </html>
